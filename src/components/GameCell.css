@@ -1,0 +1,7 @@
+.game-cell {
+  height: 200px;
+  width: 200px;
+  background-color: #FFFFFF;
+  text-align: center;
+  line-height: 200px;
+}
