@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import './GameCell.css';
 
 class GameCell extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.updateCell(this.props.id);
+  }
 
   render() {
     return (
-      <div className='game-cell'>
-        <h3>GameCell</h3>
-      </div>
+      <button className='game-cell' onClick={this.handleClick}>
+        <h3>{this.props.currentPlayer}</h3>
+      </button>
     )
   };
 
