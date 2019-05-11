@@ -6,10 +6,11 @@ const GameBoard = (props) => {
 
   const displayBoard = props.board.map((cell, index) => {
     return  <GameCell
-             currentPlayer={props.currentPlayer}
-             key={index}
+             content={cell}
              id={index}
              updateCell={props.updateCell}
+             winner={props.winner}
+             key={index}
             />
   });
 

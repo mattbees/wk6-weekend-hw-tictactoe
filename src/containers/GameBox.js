@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import GameBoard from '../components/GameBoard';
+import testWinner from '../models/test_winner';
 
 class GameBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPlayer: 'X',
+      previousPlayer: 'O', // Needed to check winner following player toggle (async)
+      currentPlayer: 'X', // Needed to post accurate player letter to cell on click
       winner: null,
-      board: ['-','-','-','-','-','-','-','-','-']
+      board: ['','','','','','','','','']
     };
 
     this.updateCell = this.updateCell.bind(this);
@@ -18,25 +20,33 @@ class GameBox extends Component {
   updateCell(id) {
     // update the relevant cell of the array with the value of currentPlayer
     this.updateBoard(id);
+    // check if there's a winner
+    this.componentDidUpdate(this.state.board)
     // toggle currentPlayer
     this.setCurrentPlayer();
-    // check if there's a winner
-
   }
 
-  updateBoard() {
+  updateBoard(id) {
     const updatedBoard = [...this.state.board];
     updatedBoard[id] = this.state.currentPlayer;
     this.setState({ board: updatedBoard });
-    console.log(updatedBoard);
+  };
+
+  componentDidUpdate(prevProps) {
+    if (this.state.board !== prevProps) {
+      const result = testWinner.checkForWin(this.state.board, this.state.previousPlayer);
+      return result;
+      // Unable to setState to output a message based on this result as this
+      // appears to be creating an infinite loop. Not sure why!
+    };
   };
 
   setCurrentPlayer() {
     if (this.state.currentPlayer === 'X') {
-      this.setState({ currentPlayer: 'O' })
+      this.setState({ previousPlayer: 'X', currentPlayer: 'O' })
     } else {
-      
-    }
+      this.setState({ previousPlayer: 'O', currentPlayer: 'X' })
+    };
   };
 
   render() {
@@ -47,11 +57,11 @@ class GameBox extends Component {
           board={this.state.board}
           currentPlayer={this.state.currentPlayer}
           updateCell={this.updateCell}
+          winner={this.state.winner}
         />
       </>
     )
   };
-
 };
 
 export default GameBox;

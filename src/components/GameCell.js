@@ -8,13 +8,15 @@ class GameCell extends Component {
   }
 
   handleClick() {
-    this.props.updateCell(this.props.id);
-  }
+    if (this.props.winner === null) {
+      this.props.updateCell(this.props.id);
+    };
+  };
 
   render() {
     return (
       <button className='game-cell' onClick={this.handleClick}>
-        <h3>{this.props.currentPlayer}</h3>
+        <h3>{this.props.content}</h3>
       </button>
     )
   };
